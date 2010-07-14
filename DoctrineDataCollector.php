@@ -52,16 +52,16 @@ class DoctrineDataCollector extends DataCollector
 
     public function formatSql($sql)
     {
-      return preg_replace('/\b(UPDATE|SET|SELECT|FROM|AS|LIMIT|ASC|COUNT|DESC|WHERE|LEFT JOIN|INNER JOIN|RIGHT JOIN|ORDER BY|GROUP BY|IN|LIKE|DISTINCT|DELETE|INSERT|INTO|VALUES)\b/', '<span style="color:#62798F;font-weight:bold;">\\1</span>', $sql);
+        return preg_replace('/\b(UPDATE|SET|SELECT|FROM|AS|LIMIT|ASC|COUNT|DESC|WHERE|LEFT JOIN|INNER JOIN|RIGHT JOIN|ORDER BY|GROUP BY|IN|LIKE|DISTINCT|DELETE|INSERT|INTO|VALUES)\b/', '<span style="color:#62798F;font-weight:bold;">\\1</span>', $sql);
     }
     
     public function getSummary()
     {
         $queries = count($this->data['queries']);
         $queriesColor = $queries < 10 ? '#2d2' : '#d22';
-      
+
         $sqlQueries = array_map(function($data){
-          return $data['sql'];
+            return $data['sql'];
         },$this->data['queries']);
         
         $nonIdenticalQueries = array_unique($sqlQueries);
@@ -70,16 +70,16 @@ class DoctrineDataCollector extends DataCollector
         $orderedQueriesList = '<ol>';
         
         foreach($sqlQueries as $sql){
-          $odd = ($inc % 2) ? 'DDE4EB' : 'C2C9CF';
+            $odd = ($inc % 2) ? 'DDE4EB' : 'C2C9CF';
           
-          if(in_array($sql,$identicalQueries)){
-            $style = 'background-color:#EFD1D2;padding:5px;';
-          }else{
-            $style = 'background-color:#'.$odd.';padding:5px;';
-          }
+            if(in_array($sql,$identicalQueries)){
+                $style = 'background-color:#EFD1D2;padding:5px;';
+            }else{
+                $style = 'background-color:#'.$odd.';padding:5px;';
+            }
             
-          $orderedQueriesList .= '<li style="'.$style.'">'.$this->formatSql($sql).'</li>';
-          $inc++;
+            $orderedQueriesList .= '<li style="'.$style.'">'.$this->formatSql($sql).'</li>';
+            $inc++;
         }
         $orderedQueriesList .= '</ol>';
         
