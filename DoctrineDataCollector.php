@@ -60,22 +60,33 @@ class DoctrineDataCollector extends DataCollector
         $queries = count($this->data['queries']);
         $queriesColor = $queries < 10 ? '#2d2' : '#d22';
       
+        $sqlQueries = array_map(function($data){
+          return $data['sql'];
+        },$this->data['queries']);
         
+        $nonIdenticalQueries = array_unique($sqlQueries);
+        $identicalQueries = array_diff_assoc($sqlQueries, $nonIdenticalQueries);
         $inc = 0;
         $orderedQueriesList = '<ol>';
-        foreach($this->data['queries'] as $query){
+        
+        foreach($sqlQueries as $sql){
           $odd = ($inc % 2) ? 'DDE4EB' : 'C2C9CF';
-          $style = 'background-color:#'.$odd.';padding:5px;';
           
-          $orderedQueriesList .= '<li style="'.$style.'">'.$this->formatSql($query['sql']).'</li>';
+          if(in_array($sql,$identicalQueries)){
+            $style = 'background-color:#EFD1D2;padding:5px;';
+          }else{
+            $style = 'background-color:#'.$odd.';padding:5px;';
+          }
+            
+          $orderedQueriesList .= '<li style="'.$style.'">'.$this->formatSql($sql).'</li>';
           $inc++;
         }
         $orderedQueriesList .= '</ol>';
         
         return sprintf('<script type="text/javascript">
         function toggle(obj) {var el = document.getElementById(obj);if ( el.style.display != \'none\' ) {el.style.display = \'none\';}else {el.style.display = \'\';}}</script><img onclick="toggle(\'data_collector_query_list\')" style="margin-left: 10px; vertical-align: middle" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKlJREFUeNrsk0EOgyAQRT9KiLog7D0Ql+B4HsULeAHXQFwaiCGBCm1Nmi4a69a/IDNk5g+8ZEhKCcMwYFfCORGlFOgrSVJKNE0DxhgofV6HELBtG5xz8N6XuK7rUjOOYx5I3gbQWoNzDiEEuq5DjLE0LcsCYwystVjXFW3bou/74xkVLuqywfGFaZp+T6uqwmGe52+DPyB+GtwQb4h5q3aI6SREko+HAAMADJ+V5b1xqucAAAAASUVORK5CYII=" />
-            <span style="color: %s">%d</span><div style="height:200px;overflow:auto;display:none" id="data_collector_query_list"><h1>SQL Queries</h1><div>%s</div></div>
-        ', $queriesColor, $queries,$orderedQueriesList);
+            <span style="color: %s">%d</span><div style="height:200px;overflow:auto;display:none" id="data_collector_query_list"><h1>SQL Queries</h1><p>%s identical queries</p><div>%s</div></div>
+        ', $queriesColor, $queries,count($identicalQueries), $orderedQueriesList);
     }
 
     public function getName()
