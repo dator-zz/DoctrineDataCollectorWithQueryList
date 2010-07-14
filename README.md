@@ -12,9 +12,9 @@ Features
   - Identical Queries Count
   - Identical Queries Highlight in a smooth red
 
-
-
 Preview
 -----------
 ![DoctrineDataCollector][1]
 [1]: http://www.dator.fr/perso/datacollectorquerylist.png
+![DoctrineDataCollectorWithDusplicated][2]
+[2]: http://www.dator.fr/perso/datacollectorquerylistwithduplicated.png
