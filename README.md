@@ -11,6 +11,7 @@ Features
   - SQL Keywords Highlight
   - Identical Queries Count
   - Identical Queries Highlight in a smooth red
+  - Summary with the queries and the number of those queries duplicated 
 
 Preview
 -----------
